@@ -1,18 +1,22 @@
 Scamazon::Application.routes.draw do
 
- 
+  get  'cart',                            to: 'orders#cart'
+  patch 'orders/update_quantity',         to: 'orders#update_quantity', as: :update_quantity
+  delete 'orders/remove_item',            to: 'orders#remove_item', as: :remove_item
+
   # #this is for entering data for your purchase
   # get 'purchases/new' => 'purchases#new'
   # #this is where you review your page before you finalize the purchase
-  resources :orders, :users
+
   resources :reviews, except: [:show, :index, :edit, :new]
   resources :sessions
   resources :products
   resources :purchases
   resources :categories
+  resources :orders, except: [:show]
+  resources :users
 
 
-  get  'cart',                            to: 'orders#cart'
   get  'fulfillment',                     to: 'orders#fulfillment'
   get  'shipped',                         to: 'orders#shipped'
   get  'paid',                            to: 'orders#paid'
@@ -22,14 +26,13 @@ Scamazon::Application.routes.draw do
   post 'purchases/new',                   to: 'purchases#new'
   post 'purchases/create',                to: 'purchases#create'
   post 'purchases/confirmation',          to: 'purchases#confirmation'
-  post 'orders/add',                      to: 'orders#add'
-  post 'orders/add_one_product',          to: 'orders#add_one_product'
-  post 'orders/subtract_one_product',     to: 'orders#subtract_one_product'
+  post 'orders/add_to_cart',              to: 'orders#add_to_cart'
   post 'orders/remove_product',           to: 'orders#remove_product'
   post 'orders/check_order_quantities',   to: 'orders#check_order_quantities'
   post 'orders/mark_as_shipped',          to: 'orders#mark_as_shipped'
+
   # post 'sessions/sign_out',             to: 'sessions#destroy'
-  delete 'sessions',                      to: 'sessions#destroy' 
+  delete 'sessions',                      to: 'sessions#destroy'
   post 'products/:id',                    to: 'products#retire', as: :retired
   post 'products/retire/:id',             to: 'products#unretire', as: :unretired
   get 'profile',                          to: 'users#show'
@@ -39,11 +42,11 @@ Scamazon::Application.routes.draw do
   get "/faq",                             to: 'static_pages#faq'
   get "/about_us",                        to: 'static_pages#about_us'
   get "/return_policy",                   to: 'static_pages#return_policy'
-     
 
-  
 
-  
+
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.
